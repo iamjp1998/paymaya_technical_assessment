@@ -1,0 +1,26 @@
+#!/bin/bash
+
+memory_health_check ()
+{
+        get_date=`(date '+%Y-%m-%d %H:%M')`
+        memory_usage=`free -m | grep "Mem" | awk '{printf (($3+$6)/$2)*100}'`
+        memory_available=`free -m | grep "Mem" | awk '{printf ($4/$2)*100}'`
+
+        if [[ $memory_usage > 90 ]]
+                then
+                        #echo "Memory usage is critical!!"
+                        #echo "The utilization reaches $memory_usage% and your available memory is only $memory_available%"
+						echo "2"
+						mail -s '$get_date memory check - critical' manocan.johnphillip@gmail.com <<< 'test'
+        elif [[ $memory_usage > 60 ]]
+                then
+                        #echo "WARNING! Memory utilization has reached the warning threshold. Please check your applications/processes"
+                        #echo "Current memory utilization is $memory_usage% and your available memory is only $memory_available%"
+						echo "1"
+        else
+                #echo "Your memory usage is normal"
+                #echo "Memory utilization : $memory_usage%"
+				echo "0"
+        fi
+}
+memory_health_check
